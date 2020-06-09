@@ -76,7 +76,7 @@ abstract class Algorithm {
   protected $_grades = null;                // The final grades
   protected $_penalties = null;             // Textual description of the penalties each member incurred
 
-
+  private $_ordinal_scale;
 
   /**
    * Constructor
@@ -172,14 +172,6 @@ abstract class Algorithm {
   public function get_marks_received() {
     return $this->_actual_marks_received;
   }// /->get_marks_received()
-
-
-
-  public function get_marks_received_by_marker_question() {
-    return $this->_actual_marks_received_by_marker_question;
-  }// /->get_marks_received_by_marker_question()
-
-
 
   public function get_total_marks_awarded() {
     return $this->_actual_total_marks_awarded;
