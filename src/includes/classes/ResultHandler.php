@@ -14,10 +14,10 @@ use WebPA\includes\functions\Common;
 
 class ResultHandler
 {
-    private $_DAO;
     private $_assessment;
     private $_collection;
     private $_collection_id;
+    private $_DAO;
     private $moduleId;
 
     /*
@@ -72,14 +72,6 @@ class ResultHandler
     * Methods
     * --------------------------------------------------------------------------------
     */
-
-    /**
-     * Load the assessment results (if any)
-     */
-    function load_results()
-    {
-        $this->_results = $this->get_responses();
-    }// /->load_results()
 
     /**
      * Fetch all responses for this assessment
