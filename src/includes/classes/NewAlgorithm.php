@@ -17,14 +17,12 @@
 namespace WebPA\includes\classes;
 
 class NewAlgorithm extends WebPAAlgorithm {
-  // Public Vars
 
-  /*
-  * CONSTRUCTOR
-  */
-  function __construct() {
+  private $_group_member_awarded = [];
+
+  public function __construct() {
     WebPAAlgorithm::_init();
-  }// /->NewAlgorithm()
+  }
 
 /*
 * ================================================================================
@@ -91,7 +89,7 @@ class NewAlgorithm extends WebPAAlgorithm {
            */
 
           $this->_group_member_total_awarded["$group_id"]["$member_id"] = 0;  // Initialise member-total
-          $this->_group_member_awarded["$group_id"]["$member_id"] = array();
+          $this->_group_member_awarded["$group_id"]["$member_id"] = [];
 
           if (!array_key_exists($group_id, $this->_group_member_responses)) {
 
