@@ -38,12 +38,9 @@ namespace WebPA\includes\classes;
 
 class XMLParser
 {
-
-    // Public Vars
     public $xml_data = '';
     public $xml_array = null;
 
-    // Private Vars
     private $_parser = null;            // reference to the XML parser object
 
     private $_parent = null;            // used by ->parse()
@@ -51,6 +48,8 @@ class XMLParser
     private $_last_opened_tag = null;   // used by ->parse()
 
     private $_cdata_tags = array();     // tags which should be handled as CDATA
+
+    private $data;
 
     /**
      * CONSTRUCTOR for the XML parser
