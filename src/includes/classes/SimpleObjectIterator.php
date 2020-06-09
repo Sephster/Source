@@ -116,9 +116,6 @@ class SimpleObjectIterator {
     $this->reset();
 
     $this->class_name = '';
-    $this->constructor_args = '';
-  }// /->_intialise()
-
-}// /class: SimpleObjectIterator
-
-?>
+    $this->class_constructor_args = '';
+  }
+}
