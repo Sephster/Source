@@ -199,6 +199,7 @@ $_user_id = Common::fetch_SESSION('_user_id', NULL);
 $_user_source_id = Common::fetch_SESSION('_user_source_id', NULL);
 $_user_context_id = Common::fetch_SESSION('_user_context_id', NULL);
 $_source_id = Common::fetch_SESSION('_source_id', '');
+$_module = null;
 $_module_id = Common::fetch_SESSION('_module_id', NULL);
 $BRANDING['logo'] = Common::fetch_SESSION('branding_logo', APP__INST_LOGO);
 $BRANDING['logo.width'] = Common::fetch_SESSION('branding_logo.width', APP__INST_WIDTH);
@@ -253,5 +254,3 @@ function get_LDAP_user_type($data) {
   return $user_type;
 
 }
-
-?>
