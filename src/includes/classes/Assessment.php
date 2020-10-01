@@ -10,6 +10,10 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\functions\Common;
 
 class Assessment {
@@ -44,15 +48,30 @@ class Assessment {
 
   private $_locked = null;
 
+  private $groupHandlerFactory;
+  private $assessmentFactory;
+  private $xmlParserFactory;
+  private $formFactory;
+
   /**
   * CONSTRUCTOR for the assessment class
   *
   * @param string $DAO
   */
-  function __construct(&$DAO) {
+  function __construct(
+      &$DAO,
+      GroupHandlerFactory $groupHandlerFactory,
+      AssessmentFactory $assessmentFactory,
+      XMLParserFactory $xmlParserFactory,
+      FormFactory $formFactory
+  ) {
     $this->_DAO =& $DAO;
     $this->_locked = null;
-  }// /->Assessment()
+    $this->groupHandlerFactory = $groupHandlerFactory;
+    $this->assessmentFactory = $assessmentFactory;
+    $this->xmlParserFactory = $xmlParserFactory;
+    $this->formFactory = $formFactory;
+  }
 
 /**
 * ================================================================================
@@ -93,7 +112,7 @@ class Assessment {
     $this->_DAO->execute("DELETE FROM " . APP__DB_TABLE_PREFIX . "user_response WHERE assessment_id = '{$this->id}'");
     $collection = $this->_DAO->fetch_value("SELECT collection_id FROM " . APP__DB_TABLE_PREFIX . "assessment WHERE assessment_id = '{$this->id}'");
     $this->_DAO->execute("DELETE FROM " . APP__DB_TABLE_PREFIX . "assessment WHERE assessment_id = '{$this->id}'");
-    $group_handler = new GroupHandler();
+    $group_handler = $this->groupHandlerFactory->make();
     $collection = $group_handler->get_collection($collection);
     $collection->delete();
     return true;
@@ -202,7 +221,14 @@ class Assessment {
   * @return mixed
   */
   function & get_clone() {
-    $clone_assessment = new Assessment($this->_DAO);
+    $clone_assessment = $this->assessmentFactory->make(
+        $this->_DAO,
+        $this->groupHandlerFactory,
+        $this->assessmentFactory,
+        $this->xmlParserFactory,
+        $this->formFactory
+    );
+
     $clone_assessment->load($this->id);   // Creates an EXACT clone of this assessment
     $clone_assessment->create();
     return $clone_assessment;
@@ -220,7 +246,7 @@ class Assessment {
 
   function get_form() {
     // Get the number of questions used in this assessment, and create an array of that size
-    $form = new Form($db);
+    $form = $this->formFactory->make($db);
     $form_xml =& $this->_form_xml;
     $form->load_from_xml($form_xml);
 
@@ -244,7 +270,7 @@ class Assessment {
        WHERE assessment_id = '{$this->id}'");
 
     if ($group_marks_xml) {
-      $xml_parser = new XMLParser();
+      $xml_parser = $this->xmlParserFactory->make();
       $xml_array = $xml_parser->parse($group_marks_xml);
 
       // If there's more than 1 group that's fine, else make it a 0-based array of 1 group
@@ -396,7 +422,9 @@ class Assessment {
   protected function _parse_marking_params($marking_params_xml) {
     $params = null;
 
-    if (!is_object($this->_xml_parser)) { $xml_parser = new XMLParser(); }
+    if (!is_object($this->_xml_parser)) {
+      $xml_parser = $this->xmlParserFactory->make();
+    }
 
     $xml_array = $xml_parser->parse($marking_params_xml);
 
