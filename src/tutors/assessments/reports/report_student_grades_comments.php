@@ -10,7 +10,7 @@
 
 require_once("../../../includes/inc_global.php");
 
-use WebPA\includes\classes\AlgorithmFactory;
+use WebPA\includes\classes\factories\AlgorithmFactory;
 use WebPA\includes\classes\Assessment;
 use WebPA\includes\functions\Common;
 
@@ -55,7 +55,7 @@ if (!$assessment->load($assessment_id)) {
 
   // ----------------------------------------
   // Get the appropriate algorithm and calculate the grades
-  $algorithm = AlgorithmFactory::get_algorithm($marking_params['algorithm']);
+  $algorithm = (new AlgorithmFactory)->make($marking_params['algorithm']);
 
   if (!$algorithm) {
     echo('Error: The requested algorithm could not be loaded.');
