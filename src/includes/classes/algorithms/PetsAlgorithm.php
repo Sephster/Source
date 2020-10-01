@@ -22,14 +22,6 @@ class PetsAlgorithm extends Algorithm {
   protected $_group_split100 = null;
   protected $_group_average_per_question = null;
 
-  /**
-   * Constructor
-   *
-   * @return  object  A new instance of this class.
-   */
-  public function __construct() {
-  }// /->__construct()
-
 /*
 * ================================================================================
 * Public Methods

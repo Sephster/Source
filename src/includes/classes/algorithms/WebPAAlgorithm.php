@@ -14,26 +14,6 @@ namespace WebPA\includes\classes\algorithms;
 
 class WebPAAlgorithm extends Algorithm {
 
-
-
-  /**
-   * Constructor
-   *
-   * @return  object  A new instance of this class.
-   */
-  public function __construct() {
-  }// /->__construct()
-
-
-
-/*
-* ================================================================================
-* Public Methods
-* ================================================================================
-*/
-
-
-
   /**
    * Calculate the student's final grades.
    *

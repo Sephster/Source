@@ -39,7 +39,7 @@ class AlgorithmFactory
                 break;
             case 'webpa':
             default:
-                $algorithm = new WebPAAlgorithm();
+                $algorithm = new WebPAAlgorithm(new GroupHandlerFactory(), new ResultHandlerFactory());
 
                 break;
         }
