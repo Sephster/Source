@@ -13,8 +13,8 @@
 
 namespace WebPA\includes\classes\algorithms;
 
-use WebPA\includes\classes\GroupHandler;
-use WebPA\includes\classes\ResultHandler;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\ResultHandlerFactory;
 
 abstract class Algorithm {
 
@@ -76,15 +76,18 @@ abstract class Algorithm {
   protected $_grades = null;                // The final grades
   protected $_penalties = null;             // Textual description of the penalties each member incurred
 
-
+  private $groupHandlerFactory;
+  private $resultHandlerFactory;
 
   /**
    * Constructor
    *
    * @return  Algorithm
    */
-  public function __construct() {
-  }// /->Algorithm()
+  public function __construct(GroupHandlerFactory $groupHandlerFactory, ResultHandlerFactory $resultHandlerFactory) {
+    $this->groupHandlerFactory = $groupHandlerFactory;
+    $this->resultHandlerFactory = $resultHandlerFactory;
+  }
 
 
 
@@ -298,7 +301,7 @@ abstract class Algorithm {
     $group_members = null;
     $group_names = null;
 
-    $group_handler = new GroupHandler();
+    $group_handler = $this->groupHandlerFactory->make();
     $collection = $group_handler->get_collection($this->_assessment->get_collection_id());
     $groups_iterator = $collection->get_groups_iterator();
     if ($groups_iterator->size()>0) {
@@ -323,7 +326,7 @@ abstract class Algorithm {
     }
 
     // Get the student submissions for this assessment
-    $result_handler = new ResultHandler($db);
+    $result_handler = $this->resultHandlerFactory->make($db);
     $result_handler->set_assessment($this->_assessment);
 
     $this->_responses = $result_handler->get_responses();
@@ -662,5 +665,4 @@ abstract class Algorithm {
 
 
 
-}// /class
-?>
+}
