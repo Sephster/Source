@@ -12,6 +12,8 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\DAOFactory;
+
 class Authenticator
 {
 
@@ -30,16 +32,18 @@ class Authenticator
     protected $_error = NULL;
     private $_DAO = NULL;
     private $cis;
+    private $daoFactory;
 
     /**
      *  CONSTRUCTOR for the Authenticator class
      */
-    public function __construct(EngCIS $cis, $username = NULL, $password = NULL)
+    public function __construct(EngCIS $cis, $username = NULL, $password = NULL, DAOFactory $daoFactory)
     {
         $this->cis = $cis;
 
         $this->username = $username;
         $this->password = $password;
+        $this->daoFactory = $daoFactory;
     }// /->Authenticator()
 
     /*
@@ -196,7 +200,7 @@ class Authenticator
     {
 
         if (is_null($this->_DAO)) {
-            $this->_DAO = new DAO(APP__DB_HOST, APP__DB_USERNAME, APP__DB_PASSWORD, APP__DB_DATABASE);
+            $this->_DAO = $this->daoFactory->make(APP__DB_HOST, APP__DB_USERNAME, APP__DB_PASSWORD, APP__DB_DATABASE);
         }
 
         return $this->_DAO;

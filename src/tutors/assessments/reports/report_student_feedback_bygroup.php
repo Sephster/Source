@@ -12,6 +12,10 @@ require_once("../../../includes/inc_global.php");
 
 use WebPA\includes\classes\factories\AlgorithmFactory;
 use WebPA\includes\classes\Assessment;
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\XMLParser;
 use WebPA\includes\functions\Common;
 
@@ -34,7 +38,14 @@ $marking_date = (int) Common::fetch_GET('md');
 
 // --------------------------------------------------------------------------------
 
-$assessment = new Assessment($DB);
+$assessment = new Assessment(
+    $DB,
+    new GroupHandlerFactory(),
+    new AssessmentFactory(),
+    new XMLParserFactory(),
+    new FormFactory()
+);
+
 if (!$assessment->load($assessment_id)) {
   $assessment = null;
   echo('Error: The requested assessment could not be loaded.');

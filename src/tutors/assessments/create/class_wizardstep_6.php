@@ -10,7 +10,10 @@
 
 require_once("../../../includes/inc_global.php");
 
-use WebPA\includes\classes\Assessment;
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\Wizard;
@@ -26,12 +29,21 @@ class WizardStep6
     public $wizard = null;
     public $step = 6;
     private $module;
+    private $assessmentFactory;
+    private $groupHandlerFactory;
+    private $xmlParserFactory;
+    private $formFactory;
 
     /*
     * CONSTRUCTOR
     */
-    public function __construct(Wizard $wizard)
-    {
+    public function __construct(
+            Wizard $wizard,
+            GroupHandlerFactory $groupHandlerFactory,
+            AssessmentFactory $assessmentFactory,
+            XMLParserFactory $xmlParserFactory,
+            FormFactory $formFactory
+    ) {
         $this->wizard = $wizard;
 
         $this->module = $wizard->get_var('module');
@@ -39,6 +51,11 @@ class WizardStep6
         $this->wizard->back_button = null;
         $this->wizard->next_button = null;
         $this->wizard->cancel_button = null;
+
+        $this->assessmentFactory = $assessmentFactory;
+        $this->groupHandlerFactory = $groupHandlerFactory;
+        $this->xmlParserFactory = $xmlParserFactory;
+        $this->formFactory = $formFactory;
     }
 
     function head()
@@ -62,7 +79,14 @@ class WizardStep6
         $errors = null;
 
         // Create the assessment object
-        $assessment = new Assessment($DB);
+        $assessment = $this->assessmentFactory->make(
+                $DB,
+                $this->groupHandlerFactory,
+                $this->assessmentFactory,
+                $this->xmlParserFactory,
+                $this->formFactory
+        );
+
         $assessment->create();
         $assessment->module_id = $this->module['module_id'];
         $assessment->name = $this->wizard->get_field('assessment_name');
@@ -150,4 +174,3 @@ class WizardStep6
     }// /->process_form()
 
 }// /class: WizardStep6
-

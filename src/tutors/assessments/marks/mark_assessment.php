@@ -11,6 +11,10 @@
 require_once("../../../includes/inc_global.php");
 
 use WebPA\includes\classes\Assessment;
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\ResultHandler;
 use WebPA\includes\classes\XMLParser;
@@ -38,7 +42,14 @@ $prev_url = $list_url;
 
 // --------------------------------------------------------------------------------
 
-$assessment = new Assessment($DB);
+$assessment = new Assessment(
+    $DB,
+    new GroupHandlerFactory(),
+    new AssessmentFactory(),
+    new XMLParserFactory(),
+    new FormFactory()
+);
+
 if ($assessment->load($assessment_id)) {
   $assessment_qs = "a={$assessment->id}&tab={$tab}&y={$year}";
 

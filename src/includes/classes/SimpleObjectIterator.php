@@ -14,6 +14,11 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
+
 class SimpleObjectIterator {
   // Public Vars
   public $array;
@@ -25,16 +30,28 @@ class SimpleObjectIterator {
   private $_key;
   private $_value;
 
-  /**
-  * CONSTRUCTOR for the simple object iterator
-  * @param array $array
-  * @param string $class_name
-  * @param string $constructor_args
-  */
-  function __construct(&$array, $class_name = '', $constructor_args = '') {
+  private $assessmentFactory;
+  private $groupHandlerFactory;
+  private $xmlParserFactory;
+  private $formFactory;
+
+  function __construct(
+      &$array,
+      $class_name = '',
+      $constructor_args = '',
+      AssessmentFactory $assessmentFactory,
+      GroupHandlerFactory $groupHandlerFactory,
+      XMLParserFactory $xmlParserFactory,
+      FormFactory $formFactory
+  ) {
     $this->_initialise($array);
     $this->class_name = $class_name;
     $this->class_constructor_args = $constructor_args;
+
+    $this->assessmentFactory = $assessmentFactory;
+    $this->groupHandlerFactory = $groupHandlerFactory;
+    $this->xmlParserFactory = $xmlParserFactory;
+    $this->formFactory = $formFactory;
   }
 
 /*
@@ -53,7 +70,13 @@ class SimpleObjectIterator {
         $temp = new GroupCollection($this->class_constructor_args);
         break;
       case 'Assessment':
-        $temp = new Assessment($this->class_constructor_args);
+        $temp = $this->assessmentFactory->make(
+            $this->class_constructor_args,
+            $this->groupHandlerFactory,
+            $this->assessmentFactory,
+            $this->xmlParserFactory,
+            $this->formFactory
+        );
         break;
       default:
         $temp = null;
@@ -118,7 +141,4 @@ class SimpleObjectIterator {
     $this->class_name = '';
     $this->constructor_args = '';
   }// /->_intialise()
-
-}// /class: SimpleObjectIterator
-
-?>
+}
