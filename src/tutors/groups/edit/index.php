@@ -11,6 +11,10 @@
 
 require_once("../../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
 use WebPA\includes\functions\Common;
@@ -81,7 +85,15 @@ $UI->content_start();
 if (!$collections) {
   echo('<p>'. Tutors::NO_COLLECTIONS .'</p>');
 } else {
-  $collection_iterator = new SimpleObjectIterator($collections, 'GroupCollection', $DB);
+  $collection_iterator = new SimpleObjectIterator(
+          $collections,
+          'GroupCollection',
+          $DB,
+      new AssessmentFactory(),
+      new GroupHandlerFactory(),
+      new XMLParserFactory(),
+      new FormFactory()
+  );
 
   echo '<p>' . Tutors::GROUPS__EDIT_INST . '</p>';
 

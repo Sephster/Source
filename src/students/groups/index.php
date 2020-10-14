@@ -10,6 +10,10 @@
 
 require_once("../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
 use WebPA\includes\functions\Common;
@@ -74,7 +78,17 @@ if (!$collections) {
     <p>Only groups that have been scheduled an assessment will appear in this list.</p>
 <?php
 } else {
-  $collection_iterator = new SimpleObjectIterator($collections, 'GroupCollection', $group_handler->_DAO);
+
+
+  $collection_iterator = new SimpleObjectIterator(
+$collections,
+'GroupCollection',
+    $group_handler->_DAO,
+      new AssessmentFactory(),
+      new GroupHandlerFactory(),
+      new XMLParserFactory(),
+      new FormFactory()
+  );
 ?>
     <p>You belong to the following groups.</p>
 <?php

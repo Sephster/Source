@@ -8,6 +8,10 @@
  * @link https://github.com/webpa/webpa
  */
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\SimpleObjectIterator;
 use WebPA\includes\functions\Common;
 
@@ -50,7 +54,15 @@ HTMLEnd;
 
     $collections = $group_handler->get_module_collections($module, $config['app_id']);
 
-    $collection_iterator = new SimpleObjectIterator($collections, 'GroupCollection', $group_handler->_DAO);
+    $collection_iterator = new SimpleObjectIterator(
+            $collections,
+            'GroupCollection',
+            $group_handler->_DAO,
+        new AssessmentFactory(),
+        new GroupHandlerFactory(),
+        new XMLParserFactory(),
+        new FormFactory()
+    );
 
     if ($collection_iterator->size()==0) {
 ?>

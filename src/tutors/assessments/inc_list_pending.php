@@ -10,6 +10,10 @@
  * @link https://github.com/webpa/webpa
  */
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\ResultHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
 
@@ -49,7 +53,15 @@ if (!$assessments) {
   $members = $result_handler->get_members_count_for_user($_user->id, $year);
 
   // loop through and display all the assessments
-  $assessment_iterator = new SimpleObjectIterator($assessments,'Assessment', $DB);
+  $assessment_iterator = new SimpleObjectIterator(
+          $assessments,
+          'Assessment',
+          $DB,
+          new AssessmentFactory(),
+      new GroupHandlerFactory(),
+      new XMLParserFactory(),
+      new FormFactory()
+  );
 
   for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
     $assessment =& $assessment_iterator->current();

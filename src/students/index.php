@@ -10,6 +10,10 @@
 
 require_once("../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\functions\ArrayFunctions;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
@@ -129,7 +133,16 @@ $UI->content_start();
       $status = 'open';
       $status_capitalized = ucfirst($status);
 
-      $assessment_iterator = new SimpleObjectIterator($open_assessments,'Assessment', $DB);
+      $assessment_iterator = new SimpleObjectIterator(
+    $open_assessments,
+'Assessment',
+          $DB,
+          new AssessmentFactory(),
+          new GroupHandlerFactory(),
+          new XMLParserFactory(),
+          new FormFactory()
+      );
+
       for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
         $assessment =& $assessment_iterator->current();
         $take_url = "assessments/take/index.php?a={$assessment->id}";
@@ -165,7 +178,15 @@ $UI->content_start();
       $status = 'pending';
       $status_capitalized = ucfirst($status);
 
-      $assessment_iterator = new SimpleObjectIterator($pending_assessments,'Assessment', $DB);
+      $assessment_iterator = new SimpleObjectIterator(
+    $pending_assessments,
+    'Assessment',
+        $DB,
+          new AssessmentFactory(),
+          new GroupHandlerFactory(),
+          new XMLParserFactory(),
+          new FormFactory()
+      );
 
       for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
         $assessment =& $assessment_iterator->current();

@@ -10,6 +10,10 @@
 
 require_once("../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
 use WebPA\includes\functions\AcademicYear;
@@ -24,6 +28,10 @@ if (!Common::check_user($_user, APP__USER_TYPE_STUDENT)){
 // --------------------------------------------------------------------------------
 
 $group_handler = new GroupHandler();
+$assessmentFactory = new AssessmentFactory();
+$groupHandlerFactory = new GroupHandlerFactory();
+$xmlParserFactory = new XMLParserFactory();
+$formFactory = new FormFactory();
 
 // Get a list of collections that the user is a member of
 
@@ -126,7 +134,18 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
     $status = 'open';
     $status_capitalized = ucfirst($status);
 
-    $assessment_iterator = new SimpleObjectIterator($open_assessments,'Assessment', $DB);
+
+
+    $assessment_iterator = new SimpleObjectIterator(
+    $open_assessments,
+'Assessment',
+            $DB,
+            $assessmentFactory,
+            $groupHandlerFactory,
+            $xmlParserFactory,
+            $formFactory,
+    );
+
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
       $assessment =& $assessment_iterator->current();
       $take_url = "take/index.php?a={$assessment->id}";
@@ -161,7 +180,15 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
     $status = 'pending';
     $status_capitalized = ucfirst($status);
 
-    $assessment_iterator = new SimpleObjectIterator($pending_assessments,'Assessment', $DB);
+    $assessment_iterator = new SimpleObjectIterator(
+    $pending_assessments,
+    'Assessment',
+        $DB,
+        $assessmentFactory,
+        $groupHandlerFactory,
+        $xmlParserFactory,
+        $formFactory
+    );
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
       $assessment =& $assessment_iterator->current();
       $take_url = "take/index.php?a={$assessment->id}";
@@ -197,7 +224,15 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
 
     $now = time();
 
-    $assessment_iterator = new SimpleObjectIterator($finished_assessments, 'Assessment', $DB);
+    $assessment_iterator = new SimpleObjectIterator(
+            $finished_assessments,
+            'Assessment',
+        $DB,
+        $assessmentFactory,
+        $groupHandlerFactory,
+        $xmlParserFactory,
+        $formFactory
+    );
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
       $assessment =& $assessment_iterator->current();
       $take_url = "take/index.php?a={$assessment->id}";

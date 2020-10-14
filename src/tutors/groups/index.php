@@ -10,6 +10,10 @@
 
 require_once("../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\AssessmentFactory;
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\SimpleObjectIterator;
 use WebPA\includes\functions\Common;
@@ -55,7 +59,15 @@ $UI->content_start();
 if (!$collections) {
   echo('<p>' . Tutors::NO__GROUPS__DESC . '</p>');
 } else {
-  $collection_iterator = new SimpleObjectIterator($collections, 'GroupCollection', $DB);
+  $collection_iterator = new SimpleObjectIterator(
+$collections,
+'GroupCollection',
+      $DB,
+      new AssessmentFactory(),
+      new GroupHandlerFactory(),
+      new XMLParserFactory(),
+      new FormFactory()
+  );
 ?>
     <p><?php echo Tutors::GROUPS__INSTRUCT__1; ?><img src="../../images/buttons/edit.gif" width="16" height="16" alt="<?php echo Generic::EDIT_QUESTION; ?>" title="edit" /> <?php echo Tutors::GROUPS__INSTRUCT__2; ?></p>
     <div class="info_box">
