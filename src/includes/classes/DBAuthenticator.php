@@ -12,11 +12,13 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\DAOFactory;
+
 class DBAuthenticator extends Authenticator {
 
-    public function __construct(EngCIS $cis, $username = NULL, $password = NULL)
+    public function __construct(EngCIS $cis, DAOFactory $daoFactory, $username = NULL, $password = NULL)
     {
-        parent::__construct($cis, $username, $password);
+        parent::__construct($cis, $username, $password, $daoFactory);
     }
 
     /*

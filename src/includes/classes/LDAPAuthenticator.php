@@ -17,6 +17,7 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\DAOFactory;
 use WebPA\includes\functions\StringFunctions;
 
 class LDAPAuthenticator extends Authenticator
@@ -24,9 +25,9 @@ class LDAPAuthenticator extends Authenticator
 
     private $ldapRequiredFields;
 
-    public function __construct(EngCIS $cis, $username = NULL, $password = NULL)
+    public function __construct(EngCIS $cis, DAOFactory $daoFactory, $username = NULL, $password = NULL)
     {
-        parent::__construct($cis, $username, $password);
+        parent::__construct($cis, $username, $password, $daoFactory);
     }
 
     public function setRequiredInfo(array $ldapRequiredFields)
