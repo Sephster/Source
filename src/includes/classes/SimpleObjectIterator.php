@@ -139,7 +139,7 @@ class SimpleObjectIterator {
     if ($this->count==0) {
         $this->array = array();
     }
-}
+
     $this->reset();
 
     $this->class_name = '';
