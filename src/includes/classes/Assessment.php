@@ -246,7 +246,7 @@ class Assessment {
 
   function get_form() {
     // Get the number of questions used in this assessment, and create an array of that size
-    $form = $this->formFactory->make($db);
+    $form = $this->formFactory->make($this->_DAO);
     $form_xml =& $this->_form_xml;
     $form->load_from_xml($form_xml);
 
