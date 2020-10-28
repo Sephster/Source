@@ -57,7 +57,7 @@ if ($assessment->load($assessment_id)) {
   $group_handler = new GroupHandler($DB, new GroupCollectionFactory());
   $collection = $group_handler->get_collection($assessment->get_collection_id());
 
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $result_handler->set_assessment($assessment);
 } else {
   $assessment = null;

@@ -111,7 +111,7 @@ if ($assessment->load($assessment_id)) {
 
   // ----------------------------------------
   // Get the student submissions for this assessment
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $result_handler->set_assessment($assessment);
 
   $responses = $result_handler->get_responses();

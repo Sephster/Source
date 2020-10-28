@@ -18,6 +18,7 @@
 //get the include file required
 require_once("../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\Module;
 use WebPA\includes\functions\Common;
 
@@ -53,7 +54,7 @@ $sScreenMsg = '';
 
 //collect all the information about the module to populate the fields
 $module_id = $CIS->get_module($module);
-$edit_module = new Module();
+$edit_module = new Module(new GroupHandlerFactory());
 $edit_module->load_from_row($module_id);
 
 //----------------------------------------------------------------------
@@ -79,7 +80,7 @@ if ($action) {          //incase we want to do more than save changes in the fut
 
     //reload module
     $module_id = $CIS->get_module($module);
-    $edit_module = new Module();
+    $edit_module = new Module(new GroupHandlerFactory());
     $edit_module->load_from_row($module_id);
 
     //send notification to the screen that the save has occured.

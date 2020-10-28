@@ -9,6 +9,6 @@ class ResultHandlerFactory
 {
     public function make(DAO $db)
     {
-        return new ResultHandler($db);
+        return new ResultHandler($db, new GroupHandlerFactory());
     }
 }

@@ -68,7 +68,7 @@ if ($assessment->load($assessment_id)) {
   $groups = $collection->get_groups_array();
   $groups_count = count($groups);
 
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $result_handler->set_assessment($assessment);
 
   // check if there are group grades
@@ -100,7 +100,7 @@ if ($assessment->load($assessment_id)) {
   }
 
   // check if there are student responses
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $result_handler->set_assessment($assessment);
   $responses = $result_handler->get_responses();
   if (!$responses) {

@@ -11,7 +11,8 @@
  //get the include file required
  require_once("../../includes/inc_global.php");
 
- use WebPA\includes\classes\Module;
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+use WebPA\includes\classes\Module;
  use WebPA\includes\classes\User;
  use WebPA\includes\functions\Common;
 
@@ -59,7 +60,7 @@ $page_intro = '';
       $sScreenMsg = "<p>You cannot delete the currently selected module!</p>";
     } else {
       $sScreenMsg = "<p>The module has been deleted.</p>";
-      $delete_module = new Module();
+      $delete_module = new Module(new GroupHandlerFactory());
       $delete_module->module_id = $module;
       $delete_module->set_dao_object($DB);
       $delete_module->delete();

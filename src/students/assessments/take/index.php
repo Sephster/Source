@@ -56,7 +56,7 @@ if ($assessment->load($assessment_id)) {
   }
 
   // Check if the user has submitted his results already
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupCollectionFactory());
   $result_handler->set_assessment($assessment);
 
   if ($result_handler->user_has_responded($_user->id, $assessment->id)) {

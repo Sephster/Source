@@ -49,7 +49,7 @@ if (!$assessments) {
   <div class="obj_list">
 <?php
   // prefetch response counts for each assessment
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $responses = $result_handler->get_responses_count_for_user($_user->id, $year);
   $members = $result_handler->get_members_count_for_user($_user->id, $year);
 

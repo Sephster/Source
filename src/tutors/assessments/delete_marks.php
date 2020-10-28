@@ -69,7 +69,7 @@ if ($assessment->load($assessment_id)) {
 
   $groups_iterator = $collection->get_groups_iterator();
 
-  $result_handler = new ResultHandler($DB);
+  $result_handler = new ResultHandler($DB, new GroupHandlerFactory());
   $result_handler->set_assessment($assessment);
 
   $responded_users = $result_handler->get_responded_users();
