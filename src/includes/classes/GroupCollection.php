@@ -15,6 +15,8 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\GroupFactory;
+use WebPA\includes\classes\factories\SimpleIteratorFactory;
 use WebPA\includes\functions\Common;
 
 class GroupCollection
@@ -34,14 +36,18 @@ class GroupCollection
     private $_locked_on = null;
 
     private $_assessment_id = null;
+    private $groupFactory;
+    private $simpleIteratorFactory;
 
     /**
      * CONSTRUCTOR for the Group collection function
      */
-    function __construct($DAO)
+    function __construct($DAO, GroupFactory $groupFactory, SimpleIteratorFactory $simpleIteratorFactory)
     {
         $this->_DAO = $DAO;
         $this->_created_on = time();
+        $this->groupFactory = $groupFactory;
+        $this->simpleIteratorFactory = $simpleIteratorFactory;
     }
 
     /*
@@ -357,7 +363,7 @@ class GroupCollection
             if ((array_key_exists($group_id, (array)$this->_group_objects)) && (is_object($this->_group_objects[$group_id]))) {
                 return $this->_group_objects[$group_id];
             } else {
-                $new_group = new Group();
+                $new_group = $this->groupFactory->make();
                 $new_group->set_dao_object($this->_DAO);
                 $new_group->set_collection_object($this);
                 $new_group->load($group_id);
@@ -377,7 +383,7 @@ class GroupCollection
      */
     function & new_group($group_name = 'new group')
     {
-        $new_group = new Group();
+        $new_group = $this->groupFactory->make();
         $new_group->set_dao_object($this->_DAO);
         $new_group->create();
         $new_group->name = $group_name;
@@ -404,9 +410,9 @@ class GroupCollection
         }
 
         if ($this->_group_objects !== null) {
-           $iterator = new SimpleIterator($this->_group_objects);
+           $iterator = $this->simpleIteratorFactory->make($this->_group_objects);
         } else {
-            $iterator = new SimpleIterator();
+            $iterator = $this->simpleIteratorFactory->make();
         }
 
         return $iterator;
