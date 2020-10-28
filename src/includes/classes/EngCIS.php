@@ -27,12 +27,13 @@ class EngCIS
     /**
      * CONSTRUCTOR
      */
-    public function __construct($sourceId, $moduleId)
+    public function __construct($sourceId, $moduleId, DAO $dao)
     {
         $this->sourceId = $sourceId;
         $this->moduleId = $moduleId;
 
-        $this->_DAO = new DAO(APP__DB_HOST, APP__DB_USERNAME, APP__DB_PASSWORD, APP__DB_DATABASE);
+        $this->_DAO = $dao;
+
         $this->_DAO->set_debug(false);
     }
 

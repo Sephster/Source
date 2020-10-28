@@ -209,7 +209,9 @@ $BRANDING['css'] = Common::fetch_SESSION('branding_css', CUSTOM_CSS);
 $BRANDING['email.help'] = Common::fetch_SESSION('branding_email.help', APP__EMAIL_HELP);
 $BRANDING['email.noreply'] = Common::fetch_SESSION('branding_email.noreply', APP__EMAIL_NO_REPLY);
 
-$CIS = new EngCIS($_source_id, $_module_id);
+$dao = new DAO(APP__DB_HOST, APP__DB_USERNAME, APP__DB_PASSWORD, APP__DB_DATABASE);
+
+$CIS = new EngCIS($_source_id, $_module_id, $dao);
 
 // If we found a user to load, load 'em!
 if ($_user_id){
