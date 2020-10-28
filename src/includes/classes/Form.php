@@ -10,6 +10,8 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\functions\Common;
 
 include_once __DIR__ . '/../inc_global.php';
@@ -26,14 +28,19 @@ class Form {
   private $_questions = null;
   private $_xml_parser = null;
 
+  private $xmlParserFactory;
+  private $formFactory;
+
   /*
   * CONSTRUCTOR
   *
   * @param mixed $DAO
   */
-  function __construct(&$DAO) {
+  function __construct(&$DAO, FormFactory $formFactory, XMLParserFactory $xmlParserFactory) {
     $this->_DAO =& $DAO;
-  }// /->Form()
+    $this->xmlParserFactory = $xmlParserFactory;
+    $this->formFactory = $formFactory;
+  }
 
 /*
 * ================================================================================
@@ -153,7 +160,7 @@ class Form {
   * @return mixed returns the clone of the form
   */
   function & get_clone() {
-    $clone_form = new self($this->_DAO);
+    $clone_form = $this->formFactory->make($this->_DAO);
     $clone_form->create();  // Changes the form's ID so it is officially a new form
     $temp_id = $clone_form->id;
     $clone_form->load_from_xml($this->get_xml()); // Creates an EXACT clone of the existing form
@@ -236,7 +243,9 @@ class Form {
   * @return string xml fragment (no <?xml ?> starting tag)
   */
   function get_xml() {
-    if (!is_object($this->_xml_parser)) { $this->_xml_parser = new XMLParser(); }
+    if (!is_object($this->_xml_parser)) {
+      $this->_xml_parser = $this->xmlParserFactory->make();
+    }
 
     // Create an array representation of the form's xml
     $xml_array['form']['formid']['_data'] = $this->id;
@@ -265,7 +274,10 @@ class Form {
   * @param mixed $xml_data
   */
   function _load_xml(&$xml_data) {
-    if (!is_object($this->_xml_parser)) { $this->_xml_parser = new XMLParser(); }
+    if (!is_object($this->_xml_parser)) {
+      $this->_xml_parser = $this->xmlParserFactory->make();
+    }
+
     $xml_array = $this->_xml_parser->parse($xml_data);
 
     // Load form properties
