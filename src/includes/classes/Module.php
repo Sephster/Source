@@ -12,6 +12,8 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\GroupHandlerFactory;
+
 class Module {
   // Public Vars
   public $module_code = NULL;
@@ -20,15 +22,18 @@ class Module {
 
   public $DAO = NULL;
 
+  private $groupHandlerFactory;
+
   /**
   * CONSTRUCTOR for the class function
   * @param string $code
   * @param string $title
   */
-  function __construct($module_code = null, $module_title = null) {
+  function __construct(GroupHandlerFactory $groupHandlerFactory, $module_code = null, $module_title = null) {
     $this->module_code = $module_code;
     $this->module_title = $module_title;
     $this->module_id = null;
+    $this->groupHandlerFactory = $groupHandlerFactory;
   }// /->Module()
 
 /*
@@ -97,7 +102,8 @@ class Module {
    function delete(){
 
      $collections = $this->DAO->fetch_col("SELECT collection_id FROM " . APP__DB_TABLE_PREFIX . "collection WHERE module_id = $this->module_id");
-     $group_handler = new GroupHandler();
+     $group_handler = $this->groupHandlerFactory->make();
+
      for ($i=0; $i<count($collections); $i++) {
        $collection = $group_handler->get_collection($collections[$i]);
        $collection->delete();

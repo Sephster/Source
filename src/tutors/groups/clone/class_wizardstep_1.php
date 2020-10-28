@@ -10,6 +10,7 @@
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\SimpleObjectIterator;
@@ -61,7 +62,8 @@ HTMLEnd;
         new AssessmentFactory(),
         new GroupHandlerFactory(),
         new XMLParserFactory(),
-        new FormFactory()
+        new FormFactory(),
+        new GroupCollectionFactory()
     );
 
     if ($collection_iterator->size()==0) {

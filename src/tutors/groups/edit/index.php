@@ -13,6 +13,7 @@ require_once("../../../includes/inc_global.php");
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
@@ -28,7 +29,7 @@ if (!Common::check_user($_user, APP__USER_TYPE_TUTOR)){
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 $collections = $group_handler->get_user_collections($_user->id, $_config['app_id']);
 
 // --------------------------------------------------------------------------------
@@ -92,7 +93,8 @@ if (!$collections) {
       new AssessmentFactory(),
       new GroupHandlerFactory(),
       new XMLParserFactory(),
-      new FormFactory()
+      new FormFactory(),
+      new GroupCollectionFactory()
   );
 
   echo '<p>' . Tutors::GROUPS__EDIT_INST . '</p>';

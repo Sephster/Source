@@ -14,6 +14,8 @@
 
 require_once('../../includes/inc_global.php');
 
+use WebPA\includes\classes\factories\GroupFactory;
+use WebPA\includes\classes\factories\SimpleIteratorFactory;
 use WebPA\includes\classes\GroupCollection;
 use WebPA\includes\functions\Common;
 use WebPA\includes\functions\StringFunctions;
@@ -127,7 +129,7 @@ if ($flg_match) {
     if ($uploadtype == '4') {
 
 // get collection
-      $collection = new GroupCollection($DB);
+      $collection = new GroupCollection($DB, new GroupFactory(), new SimpleIteratorFactory());
       $collection_id = null;
       if (isset($_REQUEST['collectionlist'])) {
         $collection_id = $_REQUEST['collectionlist'];

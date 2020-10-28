@@ -13,6 +13,7 @@ require_once("../../../includes/inc_global.php");
 use WebPA\includes\classes\Assessment;
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\Form;
@@ -62,7 +63,7 @@ if ($assessment->load($assessment_id)) {
   $form->load_from_xml($form_xml);
   $question_count = (int) $form->get_question_count();
 
-  $group_handler = new GroupHandler();
+  $group_handler = new GroupHandler($DB, new GroupCollectionFactory());
   $collection = $group_handler->get_collection($assessment->get_collection_id());
   $groups = $collection->get_groups_array();
   $groups_count = count($groups);

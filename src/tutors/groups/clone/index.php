@@ -10,6 +10,7 @@
 
 require_once('../../../includes/inc_global.php');
 
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\Wizard;
 use WebPA\includes\functions\Common;
@@ -32,7 +33,7 @@ $wizard->add_step(3,'class_wizardstep_3.php');
 $wizard->set_var('config', $_config);
 $wizard->set_var('module', $_module_id);
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 $wizard->set_var('group_handler', $group_handler);
 
 $wizard->prepare();

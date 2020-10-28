@@ -19,6 +19,7 @@
 //get the include file required
 require_once("../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\functions\Common;
 
@@ -63,7 +64,7 @@ $filecontenttype = array(4);
 //even though it appears second, the 'student data with groups' option has a filecontenttype.value of 4 (to prevent possible breakage)
 
 //this code is for use when one wants to create group collections first, then upload data
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 $collections = $group_handler->get_module_collections($_module_id);
 
 $groupsAnnex = '<div style="display: none;" id="collectionNameDiv">

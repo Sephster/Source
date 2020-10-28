@@ -109,7 +109,7 @@ if (!$assessment->load($assessment_id)) {
       }
     }
 
-    $group_handler = new GroupHandler();
+    $group_handler = (new GroupHandlerFactory())->make($DB);
     $collection =& $group_handler->get_collection($assessment->get_collection_id());
 
     $form = $assessment->get_form();

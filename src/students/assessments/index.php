@@ -12,6 +12,7 @@ require_once("../../includes/inc_global.php");
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
@@ -27,8 +28,10 @@ if (!Common::check_user($_user, APP__USER_TYPE_STUDENT)){
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
+
 $assessmentFactory = new AssessmentFactory();
+$groupCollectionFactory = new GroupCollectionFactory();
 $groupHandlerFactory = new GroupHandlerFactory();
 $xmlParserFactory = new XMLParserFactory();
 $formFactory = new FormFactory();
@@ -134,8 +137,6 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
     $status = 'open';
     $status_capitalized = ucfirst($status);
 
-
-
     $assessment_iterator = new SimpleObjectIterator(
     $open_assessments,
 'Assessment',
@@ -144,6 +145,7 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
             $groupHandlerFactory,
             $xmlParserFactory,
             $formFactory,
+            $groupCollectionFactory
     );
 
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
@@ -187,7 +189,8 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
         $assessmentFactory,
         $groupHandlerFactory,
         $xmlParserFactory,
-        $formFactory
+        $formFactory,
+        $groupCollectionFactory
     );
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
       $assessment =& $assessment_iterator->current();
@@ -231,7 +234,8 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
         $assessmentFactory,
         $groupHandlerFactory,
         $xmlParserFactory,
-        $formFactory
+        $formFactory,
+        $groupCollectionFactory
     );
     for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
       $assessment =& $assessment_iterator->current();

@@ -10,20 +10,22 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\GroupCollectionFactory;
+
 class GroupHandler
 {
-    // Public Vars
     public $_DAO = null;  // [pmn] due to a poor iterator implementation, this is currently public
 
-    // Private Vars
+    private $groupCollectionFactory;
 
     /**
      * CONSTRUCTOR
      */
-    function __construct()
+    function __construct(DAO $dao, GroupCollectionFactory $groupCollectionFactory)
     {
-        $this->_DAO = new DAO(APP__DB_HOST, APP__DB_USERNAME, APP__DB_PASSWORD, APP__DB_DATABASE);
-    }// /->GroupHandler()
+        $this->_DAO = $dao;
+        $this->groupCollectionFactory = $groupCollectionFactory;
+    }
 
     /*
     * ================================================================================
@@ -128,13 +130,13 @@ class GroupHandler
     function & clone_collection($collection_id, $include_roles = null)
     {
         // get the collection to clone
-        $org_collection = new GroupCollection($this->_DAO);
+        $org_collection = $this->groupCollectionFactory->make($this->_DAO);
         $org_collection->load($collection_id);
 
         $group_iterator =& $org_collection->get_groups_iterator();
 
         // clone the collection
-        $clone_collection = new GroupCollection($this->_DAO);
+        $clone_collection = $this->groupCollectionFactory->make($this->_DAO);
         $clone_collection->load($collection_id);
         $clone_collection->create();  // create a new ID number
         $clone_collection->save();
@@ -177,7 +179,7 @@ class GroupHandler
      */
     function & create_collection()
     {
-        $new_collection = new GroupCollection($this->_DAO);
+        $new_collection = $this->groupCollectionFactory->make($this->_DAO);
         $new_collection->create();
         return $new_collection;
     }// /->create_collection()
@@ -190,7 +192,7 @@ class GroupHandler
      */
     function get_collection($collection_id)
     {
-        $collection = new GroupCollection($this->_DAO);
+        $collection = $this->groupCollectionFactory->make($this->_DAO);
         return ($collection->load($collection_id)) ? $collection : null;
     }// /->get_collection()
 

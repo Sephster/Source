@@ -11,6 +11,7 @@
 
 require_once("../../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\functions\Common;
 
@@ -30,7 +31,7 @@ $list_url = "../../../tutors/groups/";
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 $collection = $group_handler->get_collection($collection_id);
 
 $allow_edit = FALSE;

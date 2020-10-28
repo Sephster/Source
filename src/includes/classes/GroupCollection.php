@@ -389,7 +389,7 @@ class GroupCollection
         $new_group->name = $group_name;
         $new_group->set_collection_object($this);
 
-        $this->_group[$new_group->id] = $new_group->get_as_array();
+        $this->_groups[$new_group->id] = $new_group->get_as_array();
         $this->_group_objects[$new_group->id] =& $new_group;
         return $new_group;
     }// /->new_group()

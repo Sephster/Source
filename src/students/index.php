@@ -12,6 +12,7 @@ require_once("../includes/inc_global.php");
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\functions\ArrayFunctions;
@@ -27,7 +28,7 @@ if (!Common::check_user($_user, APP__USER_TYPE_STUDENT)){
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 
 // Get a list of collections that the user is a member of
 
@@ -140,7 +141,8 @@ $UI->content_start();
           new AssessmentFactory(),
           new GroupHandlerFactory(),
           new XMLParserFactory(),
-          new FormFactory()
+          new FormFactory(),
+          new GroupCollectionFactory()
       );
 
       for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
@@ -185,7 +187,8 @@ $UI->content_start();
           new AssessmentFactory(),
           new GroupHandlerFactory(),
           new XMLParserFactory(),
-          new FormFactory()
+          new FormFactory(),
+          new GroupCollectionFactory()
       );
 
       for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {

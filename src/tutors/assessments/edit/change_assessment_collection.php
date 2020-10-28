@@ -13,6 +13,7 @@ require_once("../../../includes/inc_global.php");
 use WebPA\includes\classes\Assessment;
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
@@ -37,7 +38,7 @@ $command = Common::fetch_POST('command');
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 
 $assessment = new Assessment(
     $DB,
@@ -210,7 +211,7 @@ if (!$assessment) {
     <div class="form_section">
 <?php
 
-    $group_handler = new GroupHandler();
+    $group_handler = new GroupHandler($DB, new GroupCollectionFactory());
     $collections = $group_handler->get_user_collections($_user->id, $_config['app_id']);
 
     if (!$collections) {
@@ -226,7 +227,8 @@ if (!$assessment) {
             new AssessmentFactory(),
           new GroupHandlerFactory(),
           new XMLParserFactory(),
-          new FormFactory()
+          new FormFactory(),
+          new GroupCollectionFactory()
       );
 ?>
         <p>Please select the collection of groups you wish to use in this assessment from from the list below.</p>

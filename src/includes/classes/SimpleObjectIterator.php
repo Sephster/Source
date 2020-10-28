@@ -16,6 +16,7 @@ namespace WebPA\includes\classes;
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 
@@ -34,6 +35,7 @@ class SimpleObjectIterator {
   private $groupHandlerFactory;
   private $xmlParserFactory;
   private $formFactory;
+  private $groupCollectionFactory;
 
   function __construct(
       &$array,
@@ -42,7 +44,8 @@ class SimpleObjectIterator {
       AssessmentFactory $assessmentFactory,
       GroupHandlerFactory $groupHandlerFactory,
       XMLParserFactory $xmlParserFactory,
-      FormFactory $formFactory
+      FormFactory $formFactory,
+      GroupCollectionFactory $groupCollectionFactory
   ) {
     $this->_initialise($array);
     $this->class_name = $class_name;
@@ -52,6 +55,7 @@ class SimpleObjectIterator {
     $this->groupHandlerFactory = $groupHandlerFactory;
     $this->xmlParserFactory = $xmlParserFactory;
     $this->formFactory = $formFactory;
+    $this->groupCollectionFactory = $groupCollectionFactory;
   }
 
 /*
@@ -67,7 +71,8 @@ class SimpleObjectIterator {
   function &current() {
     switch ($this->class_name) {
       case 'GroupCollection':
-        $temp = new GroupCollection($this->class_constructor_args);
+        $temp = $this->groupCollectionFactory->make($this->class_constructor_args);
+
         break;
       case 'Assessment':
         $temp = $this->assessmentFactory->make(

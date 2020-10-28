@@ -12,6 +12,7 @@ require_once("../../includes/inc_global.php");
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
@@ -25,7 +26,7 @@ if (!Common::check_user($_user, APP__USER_TYPE_STUDENT)){
 
 // --------------------------------------------------------------------------------
 
-$group_handler = new GroupHandler();
+$group_handler = new GroupHandler($DB, new GroupCollectionFactory());
 $collections = $group_handler->get_member_collections($_user->id, APP__ID, 'user');
 
 // --------------------------------------------------------------------------------
@@ -87,7 +88,8 @@ $collections,
       new AssessmentFactory(),
       new GroupHandlerFactory(),
       new XMLParserFactory(),
-      new FormFactory()
+      new FormFactory(),
+      new GroupCollectionFactory()
   );
 ?>
     <p>You belong to the following groups.</p>

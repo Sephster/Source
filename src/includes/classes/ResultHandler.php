@@ -10,6 +10,7 @@
 
 namespace WebPA\includes\classes;
 
+use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\functions\Common;
 
 class ResultHandler
@@ -19,16 +20,18 @@ class ResultHandler
     private $_collection;
     private $_collection_id;
     private $moduleId;
+    private $groupHandlerFactory;
 
     /*
     * CONSTRUCTOR for the result handler
     * @param mixed $DAO
     */
-    function __construct(DAO $DAO)
+    function __construct(DAO $DAO, GroupHandlerFactory $groupHandlerFactory)
     {
         $this->moduleId = Common::fetch_SESSION('_module_id', null);
 
         $this->_DAO = $DAO;
+        $this->groupHandlerFactory = $groupHandlerFactory;
     }
 
     /*
@@ -53,7 +56,7 @@ class ResultHandler
 
         $this->_collection_id = $this->_assessment->get_collection_id();
 
-        $_group_handler = new GroupHandler();
+        $_group_handler = $this->groupHandlerFactory->make();
 
         $this->_collection = $_group_handler->get_collection($this->_collection_id);
     }

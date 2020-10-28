@@ -13,6 +13,7 @@ require_once("../../../includes/inc_global.php");
 use WebPA\includes\classes\Assessment;
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\GroupHandler;
@@ -53,7 +54,7 @@ $assessment = new Assessment(
 if ($assessment->load($assessment_id)) {
   $assessment_qs = "a={$assessment->id}&tab={$tab}&y={$year}";
 
-  $group_handler = new GroupHandler();
+  $group_handler = new GroupHandler($DB, new GroupCollectionFactory());
   $collection = $group_handler->get_collection($assessment->get_collection_id());
 
   $result_handler = new ResultHandler($DB);

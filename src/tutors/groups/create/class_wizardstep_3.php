@@ -84,7 +84,7 @@ HTMLEnd;
                     <?php
                     $num_groups = (int)$this->wizard->get_field('num_groups');
 
-                    $groupHandler = new GroupHandler();
+                    $groupHandler = new GroupHandler($DB, new GroupCollectionFactory());
 
                     $group_names = $groupHandler->generate_group_names(
                         $num_groups,

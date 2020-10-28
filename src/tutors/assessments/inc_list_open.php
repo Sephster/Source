@@ -12,6 +12,7 @@
 
 use WebPA\includes\classes\factories\AssessmentFactory;
 use WebPA\includes\classes\factories\FormFactory;
+use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\factories\GroupHandlerFactory;
 use WebPA\includes\classes\factories\XMLParserFactory;
 use WebPA\includes\classes\ResultHandler;
@@ -60,7 +61,8 @@ $assessments,
       new AssessmentFactory(),
       new GroupHandlerFactory(),
       new XMLParserFactory(),
-      new FormFactory()
+      new FormFactory(),
+      new GroupCollectionFactory()
   );
 
   for ($assessment_iterator->reset(); $assessment_iterator->is_valid(); $assessment_iterator->next()) {
