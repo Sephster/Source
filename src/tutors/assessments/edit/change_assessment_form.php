@@ -25,6 +25,8 @@ if (!Common::check_user($_user, APP__USER_TYPE_TUTOR)){
   exit;
 }
 
+$formFactory = new FormFactory();
+
 // --------------------------------------------------------------------------------
 // Process GET/POST
 
@@ -50,7 +52,7 @@ if ($assessment->load($assessment_id)) {
   $assessment_qs = "a={$assessment->id}&tab={$tab}&y={$year}";
   $assessment_url = "edit_assessment.php?{$assessment_qs}";
 
-  $form = new Form($DB);
+  $form = $formFactory->make($DB);
   $form_xml =& $assessment->get_form_xml();
   $form->load_from_xml($form_xml);
 } else {
@@ -73,7 +75,7 @@ if (($command) && ($assessment)) {
           $errors[] = 'You must select an assessment form to use.';
         } else {
           // Change of name
-          $new_form = new Form($DB);
+          $new_form = $formFactory->make($DB);
           $new_form->load($form_id);
           $assessment->set_form_xml( $new_form->get_xml() );
         }

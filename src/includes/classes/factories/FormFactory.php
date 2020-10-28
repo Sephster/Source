@@ -9,6 +9,6 @@ class FormFactory
 {
     public function make(DAO $db)
     {
-        return new Form($db);
+        return new Form($db, new self(), new XMLParserFactory());
     }
 }

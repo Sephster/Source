@@ -53,7 +53,7 @@ $assessment = new Assessment(
 if ($assessment->load($assessment_id)) {
     $assessment_qs = "a={$assessment->id}&tab={$tab}&y={$year}";
 
-    $form = new Form($DB);
+    $form = (new FormFactory())->make($DB);
 
     $form->load_from_xml($assessment->get_form_xml());
 

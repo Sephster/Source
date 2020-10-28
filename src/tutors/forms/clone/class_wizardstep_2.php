@@ -8,6 +8,7 @@
  * @link https://github.com/webpa/webpa
  */
 
+use WebPA\includes\classes\factories\FormFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\classes\Wizard;
 use WebPA\includes\functions\Common;
@@ -46,7 +47,7 @@ class WizardStep2 {
     $DB =& $this->wizard->get_var('db');
     $user =& $this->wizard->get_var('user');
 
-    $form = new Form($DB);
+    $form = (new FormFactory())->make($DB);
     $form->load($this->wizard->get_field('form_id'));
 
     if (!$form) {

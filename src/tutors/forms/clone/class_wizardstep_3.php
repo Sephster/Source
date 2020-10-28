@@ -8,6 +8,7 @@
  * @link https://github.com/webpa/webpa
  */
 
+use WebPA\includes\classes\factories\FormFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\classes\Wizard;
 
@@ -53,7 +54,7 @@ class WizardStep3
 
         $errors = null;
 
-        $existing_form = new Form($DB);
+        $existing_form = (new FormFactory())->make($DB);
         $existing_form->load($this->wizard->get_field('form_id'));
 
         $clone_form =& $existing_form->get_clone();

@@ -10,6 +10,7 @@
 
 require_once("../../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\FormFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\classes\FormRenderer;
 use WebPA\includes\functions\Common;
@@ -31,7 +32,8 @@ if ($intro_text) {
   $intro_text = '<< Your introduction text will go in here >>';
 }
 
-$form = new Form($DB);
+$form = (new FormFactory())->make($DB);
+
 $form->load($form_id);
 
 $form_renderer = new FormRenderer();

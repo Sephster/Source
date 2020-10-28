@@ -10,6 +10,7 @@
 
 require_once("../../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\FormFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\functions\Common;
 
@@ -28,7 +29,8 @@ $command = Common::fetch_POST('command', Common::fetch_GET('command'));
 // --------------------------------------------------------------------------------
 
 
-$form = new Form($DB);
+$form = (new FormFactory())->make($DB);
+
 if ($form->load($form_id)) {
   $form_qs = "f={$form->id}";
 } else {

@@ -57,7 +57,7 @@ if ($assessment->load($assessment_id)) {
   $do_reports = true;
   $assessment_qs = "a={$assessment->id}&tab={$tab}&y={$year}";
 
-  $form = new Form($DB);
+  $form = (new FormFactory())->make($DB);
   $form_xml = $assessment->get_form_xml();
   $form->load_from_xml($form_xml);
   $question_count = (int) $form->get_question_count();

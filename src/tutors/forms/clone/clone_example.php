@@ -14,6 +14,7 @@
 
 require_once("../../../includes/inc_global.php");
 
+use WebPA\includes\classes\factories\FormFactory;
 use WebPA\includes\classes\Form;
 use WebPA\includes\functions\Common;
 
@@ -36,7 +37,7 @@ if (empty($formid)) {
 }
 
 //get the form information
-$form = new Form($DB);
+$form = (new FormFactory())->make($DB);
 $form->load($form_id);
 
 if (!empty($new_form_name)) {
