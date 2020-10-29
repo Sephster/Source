@@ -8,8 +8,7 @@
  * @link https://github.com/webpa/webpa
  */
 
-require_once("../../../includes/inc_global.php");
-
+use WebPA\includes\classes\DAO;
 use WebPA\includes\classes\factories\GroupCollectionFactory;
 use WebPA\includes\classes\GroupHandler;
 use WebPA\includes\classes\Wizard;
@@ -22,11 +21,12 @@ class WizardStep4
     public $step = 4;
 
     private $moduleId;
+    private $dao;
 
     /*
     * CONSTRUCTOR
     */
-    public function __construct(Wizard $wizard)
+    public function __construct(Wizard $wizard, DAO $dao)
     {
         $this->wizard = $wizard;
 
@@ -35,7 +35,9 @@ class WizardStep4
         $this->wizard->back_button = null;
         $this->wizard->next_button = null;
         $this->wizard->cancel_button = null;
-    }// /WizardStep4()
+
+        $this->dao = $dao;
+    }
 
     function head()
     {
@@ -60,7 +62,7 @@ HTMLEnd;
         $user = $this->wizard->get_var('user');
         $config = $this->wizard->get_var('config');
 
-        $group_handler = new GroupHandler($DB, new GroupCollectionFactory());
+        $group_handler = new GroupHandler($this->dao, new GroupCollectionFactory());
 
         // Run a load of checks to see if we can create these new groups!
         $errors = null;
